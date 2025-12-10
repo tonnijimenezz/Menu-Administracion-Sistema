@@ -41,7 +41,7 @@ Estructura
 
 Explicación de lo que hace cada botón.
 
-1-  Información del Sistema
+1. Información del Sistema
   1.1 Información general del sistema (Nombre dispositivo, Procesador, RAM, Tipo de Sistema, Edición de Windows, Version,
 compilación, grupo de trabajo, nombre completo)
   1.2  Información especifica del sistema (Procesador "Modelo, fabricante, nucleos, procesaodres logicos, velocidad, arquitectura",
@@ -49,7 +49,7 @@ Memoria ram "total, modulos instalados", Almacenamiento "Disco, Sistema de archi
 Adaptadores, MAC, IP, DNS", Bios y Placa base "Nombre del fabricante de la Bios, Placa base, Serial", Tarjetas graficas "Nombre,
 ram, resolución, driver)
   1.3 Generar excel con toda la información general
-
+  
 2. Liberador de espacio
    2.1 Liberador de Disco (Automaticamente marca todas las casillas del liberador de espacio de windows y lo libera)
    2.2 Limpia la carpeta de archivos temporales del sistema

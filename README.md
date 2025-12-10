@@ -15,29 +15,6 @@ La funciones principales son las siguientes:
 - Herramientas de Red - Utilidades para diagnóstico y configuración de red
 
 Estructura 
-|
-|_________ Información del Sistema
-|          |_____ Información general del sistema
-|          |_____ Información especifica del sistema
-|          |_____ Generar Excel
-|
-|_________ Liberador de espacio
-|          |_____ Liberadior Automatico
-|          |_____ Archivos temporales
-|          |_____ Vaciar papelera
-|
-|_________ Reparación de Disco y Sistema 
-|          |______ Escanear errores de disco
-|          |______ Reparar errores de disco
-|          |______ Reparar archivos del sistema
-|          |______ Reparar imagen de Windows
-|
-|
-|_________ Herramientas de Red
-          |______ Diagnostico de red completo
-          |______ Reparación rapida
-
-
 
 Explicación de lo que hace cada botón.
 

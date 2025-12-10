@@ -43,3 +43,9 @@ ram, resolución, driver)
 4. Herramientas de Red
    4.1 Diagnostico de red completo (Identificar exactamente dónde está el problema de conexión)
    4.2 Solucionar 4 problemas comunes de red en 1 clic (Cache DNS, Reiniciar Winsock, Liberar y renovar IP y Limpiar ARP)
+
+
+Para ejecutar y probar este codigo en powershell ejecutando como administrador escribimos
+
+1 - Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+2 - .\Menu.ps1

@@ -67,10 +67,22 @@ $moduloRed = Join-Path $ScriptDirectory "Herramientasdered.ps1"
 if (Test-Path $moduloRed) {
     try {
         . $moduloRed
-        Write-Host "Herramientas de red cargadas correctamente" -ForegroundColor Green
+       
     }
     catch {
         Write-Host "Error cargando herramientas de red: $_" -ForegroundColor Red
+    }
+}
+
+# Cargar módulo de monitor de rendimiento
+$MonitorModule = Join-Path $ScriptDirectory "MonitorRendimiento.ps1"
+if (Test-Path $MonitorModule) {
+    try {
+        . $MonitorModule
+
+    }
+    catch {
+        Write-Host "Error cargando monitor: $_" -ForegroundColor Red
     }
 }
 
@@ -138,6 +150,17 @@ $btnNetwork.Size = New-Object System.Drawing.Size(200, 40)
 $btnNetwork.Location = New-Object System.Drawing.Point(150, 180)
 $btnNetwork.BackColor = [System.Drawing.Color]::LightGray
 $panel.Controls.Add($btnNetwork)
+
+#Boton 5: Monitor Rendimiento
+$btnMonitor = New-Object System.Windows.Forms.Button
+$btnMonitor.Text = "5. Monitor de Rendimiento"
+$btnMonitor.Font = New-Object System.Drawing.Font("Arial", 10, [System.Drawing.FontStyle]::Regular)
+$btnMonitor.ForeColor = [System.Drawing.Color]::DarkGreen
+$btnMonitor.Size = New-Object System.Drawing.Size(200, 40)
+$btnMonitor.Location = New-Object System.Drawing.Point(150, 230)
+$btnMonitor.BackColor = [System.Drawing.Color]::LightGray
+$panel.Controls.Add($btnMonitor)
+
 
 
 # Boton Salir
@@ -234,6 +257,22 @@ $btnNetwork.Add_Click({
         $labelStatus.Text = "ERROR: Módulo no disponible"
         [System.Windows.Forms.MessageBox]::Show(
             "El módulo de herramientas de red no está disponible.",
+            "Error",
+            [System.Windows.Forms.MessageBoxButtons]::OK,
+            [System.Windows.Forms.MessageBoxIcon]::Error
+        )
+    }
+})
+
+#EventoMonitorRendimiento
+$btnMonitor.Add_Click({
+    if (Get-Command Mostrar-MonitorRendimiento -ErrorAction SilentlyContinue) {
+        $labelStatus.Text = "Abriendo Monitor de Rendimiento..."
+        Mostrar-MonitorRendimiento
+    } else {
+        $labelStatus.Text = "ERROR: Módulo no disponible"
+        [System.Windows.Forms.MessageBox]::Show(
+            "El módulo Monitor de Rendimiento no está disponible.",
             "Error",
             [System.Windows.Forms.MessageBoxButtons]::OK,
             [System.Windows.Forms.MessageBoxIcon]::Error

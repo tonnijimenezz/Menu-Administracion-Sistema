@@ -44,6 +44,13 @@ ram, resolución, driver)
    4.1 Diagnostico de red completo (Identificar exactamente dónde está el problema de conexión)
    4.2 Solucionar 4 problemas comunes de red en 1 clic (Cache DNS, Reiniciar Winsock, Liberar y renovar IP y Limpiar ARP)
 
+5. Monitor de Sistema
+   CPU: Uso en % con barra de colores (verde/amarillo/rojo)
+   RAM: Uso actual con info detallada (GB usados/totales)
+   DISCOS: Todas las unidades con barras de espacio
+   PROCESOS: Top 5 que más CPU consumen
+   ACTUALIZACIÓN AUTOMÁTICA: Cada 3 segundos
+
 
 Para ejecutar y probar este codigo en powershell ejecutando como administrador escribimos
 

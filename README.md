@@ -1,4 +1,3 @@
-(((EN DESARROLLO)))
 
 Este proyecto es una aplicación gráfica desarrollada en PowerShell que utiliza Windows Forms para crear una interfaz de usuario. 
 Proporciona herramientas para el mantenimiento y administración del sistema Windows, organizada en botones para diferentes tareas.
@@ -50,6 +49,17 @@ ram, resolución, driver)
    DISCOS: Todas las unidades con barras de espacio
    PROCESOS: Top 5 que más CPU consumen
    ACTUALIZACIÓN AUTOMÁTICA: Cada 3 segundos
+
+6. Gestor de Software
+   📦 Funcionalidades principales:
+
+✅ Inventario Completo - Lista todas las aplicaciones (MSI, registro 32/64 bits, usuarios)
+✅ Desinstalación Inteligente - Elimina múltiples apps simultáneamente con un solo clic
+- Marca desde una a todas las apps con checkboxes y desinstalar todas a la vez
+✅ Actualización Masiva - Actualiza TODO el software automáticamente usando Winget
+✅ Historial de Windows Update - Visualiza todas las actualizaciones instaladas
+- Ver cronología completa de updates
+- Identificar qué KB causó problemas
 
 
 Para ejecutar y probar este codigo en powershell ejecutando como administrador escribimos

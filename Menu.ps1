@@ -12,28 +12,17 @@ if (-not $ScriptDirectory) {
 
 # CARGAR DIRECTAMENTE EL MÓDULO
 $modulePath = Join-Path $ScriptDirectory "InformacionSistema.ps1"
-
 if (Test-Path $modulePath) {
-    #Write-Host " Archivo encontrado: InformacionSistema.ps1" -ForegroundColor Green
     try {
-        # Cargar el módulo usando el operador punto
-        . $modulePath
-        #Write-Host " Módulo InformacionSistema CARGADO" -ForegroundColor Green
-        
-        # Verificar si la función se cargó
-      #  if (Get-Command Show-InformacionSistemaMenu -ErrorAction SilentlyContinue) {
-        #    Write-Host " Función Show-InformacionSistemaMenu DISPONIBLE" -ForegroundColor Green
-        #} else {
-      #      Write-Host " Función Show-InformacionSistemaMenu NO disponible" -ForegroundColor Red
-       # }
+        # Redirigir toda la salida a null para ocultarla
+        & {
+            . $modulePath
+        } *>$null
     }
     catch {
-        Write-Host " Error al cargar: $_" -ForegroundColor Red
+        # Solo mostrar error si es crítico
+        # Write-Host " Error al cargar: $_" -ForegroundColor Red
     }
-} else {
-    Write-Host " Archivo InformacionSistema.ps1 no encontrado" -ForegroundColor Red
-    Write-Host "Archivos en la carpeta:" -ForegroundColor Cyan
-    Get-ChildItem $ScriptDirectory -Name *.ps1 | ForEach-Object { Write-Host "  - $_" -ForegroundColor White }
 }
 
 #Write-Host "=== CARGA COMPLETADA ===" -ForegroundColor Yellow
@@ -86,10 +75,21 @@ if (Test-Path $MonitorModule) {
     }
 }
 
+# Cargar módulo de software 
+$SoftwareModule = Join-Path $ScriptDirectory "SoftwareCompleto.ps1"  
+if (Test-Path $SoftwareModule) {
+    try {
+        . $SoftwareModule
+    }
+    catch {
+        Write-Host "Error cargando Software Completo: $_" -ForegroundColor Red
+    }
+}
+
 # Crear formulario principal
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "Herramientas de Administracion del Sistema"
-$form.Size = New-Object System.Drawing.Size(625, 535)
+$form.Size = New-Object System.Drawing.Size(625, 570)
 $form.StartPosition = "CenterScreen"
 $form.MaximizeBox = $false
 $form.FormBorderStyle = "FixedDialog"
@@ -107,7 +107,7 @@ $form.Controls.Add($labelTitle)
 # Panel para agrupar botones
 $panel = New-Object System.Windows.Forms.Panel
 $panel.Location = New-Object System.Drawing.Point(50, 70)
-$panel.Size = New-Object System.Drawing.Size(500, 350)
+$panel.Size = New-Object System.Drawing.Size(500, 380)
 $panel.BorderStyle = "FixedSingle"
 $form.Controls.Add($panel)
 
@@ -161,6 +161,16 @@ $btnMonitor.Location = New-Object System.Drawing.Point(150, 230)
 $btnMonitor.BackColor = [System.Drawing.Color]::LightGray
 $panel.Controls.Add($btnMonitor)
 
+#Boton 6: Software Completo
+$btnSoftware = New-Object System.Windows.Forms.Button
+$btnSoftware.Text = "6. Software Completo"
+$btnSoftware.Font = New-Object System.Drawing.Font("Arial", 10, [System.Drawing.FontStyle]::Regular)
+$btnSoftware.ForeColor = [System.Drawing.Color]::DarkGreen
+$btnSoftware.Size = New-Object System.Drawing.Size(200, 40)
+$btnSoftware.Location = New-Object System.Drawing.Point(150, 280)
+$btnSoftware.BackColor = [System.Drawing.Color]::LightGray
+$panel.Controls.Add($btnSoftware)
+
 
 
 # Boton Salir
@@ -169,7 +179,7 @@ $btnExit.Text = "Salir"
 $btnExit.Font = New-Object System.Drawing.Font("Arial", 10, [System.Drawing.FontStyle]::Bold)
 $btnExit.ForeColor = [System.Drawing.Color]::White
 $btnExit.Size = New-Object System.Drawing.Size(100, 35)
-$btnExit.Location = New-Object System.Drawing.Point(250, 430)
+$btnExit.Location = New-Object System.Drawing.Point(250, 480)
 $btnExit.BackColor = [System.Drawing.Color]::DarkRed
 $btnExit.Add_Click({$form.Close()})
 $form.Controls.Add($btnExit)
@@ -180,11 +190,11 @@ $labelStatus.Text = "Seleccione una opcion del menu"
 $labelStatus.Font = New-Object System.Drawing.Font("Arial", 9, [System.Drawing.FontStyle]::Italic)
 $labelStatus.ForeColor = [System.Drawing.Color]::Gray
 $labelStatus.Size = New-Object System.Drawing.Size(300, 20)
-$labelStatus.Location = New-Object System.Drawing.Point(150, 380)
+$labelStatus.Location = New-Object System.Drawing.Point(150, 430)
 $form.Controls.Add($labelStatus)
 
 # Agregar eventos de hover para los botones
-$buttons = @($btnInformacionSistema, $btnliberadordedisco, $btnRepair, $btnNetwork)
+$buttons = @($btnInformacionSistema, $btnliberadordedisco, $btnRepair, $btnNetwork, $btnMonitor, $btnSoftware)
 
 foreach ($button in $buttons) {
     $button.Add_MouseEnter({
@@ -280,7 +290,31 @@ $btnMonitor.Add_Click({
     }
 })
 
-
+# Evento para el botón Software Completo
+$btnSoftware.Add_Click({
+    if (Get-Command Mostrar-GestorSoftware -ErrorAction SilentlyContinue) {
+        $labelStatus.Text = "Abriendo Gestor de Software..."
+        Mostrar-GestorSoftware
+    } else {
+        $labelStatus.Text = "ERROR: Función no disponible"
+        
+        # Mostrar qué funciones SÍ existen para debug
+        $availableFunctions = (Get-Command -CommandType Function).Name | Where-Object { $_ -like "*Software*" -or $_ -like "*Gestor*" }
+        
+        if ($availableFunctions) {
+            $message = "La función 'Mostrar-GestorSoftware' no está disponible.`r`n`r`nFunciones relacionadas encontradas:`r`n$($availableFunctions -join "`r`n")"
+        } else {
+            $message = "La función 'Mostrar-GestorSoftware' no está disponible.`r`n`r`nNo se encontraron funciones relacionadas con Software."
+        }
+        
+        [System.Windows.Forms.MessageBox]::Show(
+            $message,
+            "Error de Carga del Módulo",
+            [System.Windows.Forms.MessageBoxButtons]::OK,
+            [System.Windows.Forms.MessageBoxIcon]::Error
+        )
+    }
+})
 
 
 $labelNombre = New-Object System.Windows.Forms.Label
